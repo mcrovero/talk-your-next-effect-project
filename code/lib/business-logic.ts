@@ -1,21 +1,14 @@
-import { Data, Effect, Schema } from "effect";
+import { Data, Effect } from "effect";
 import { TodoStore } from "./todo-store";
-
-export const TodoSchema = Schema.Struct({
-  id: Schema.Number,
-  title: Schema.String,
-});
-
-export type Todo = Schema.Schema.Type<typeof TodoSchema>;
 
 // The error is part of the domain
 export class TodoNotFoundError extends Data.TaggedError("TodoNotFoundError") {}
 
-export const getTodoById: (args: {
+export const getTodoById = Effect.fn("getTodoById")(function* ({
+  id,
+}: {
   id: number;
-}) => Effect.Effect<Todo, TodoNotFoundError, TodoStore> = Effect.fn(
-  "getTodoById"
-)(function* ({ id }: { id: number }) {
+}) {
   // We define a dependency
   const todoStore = yield* TodoStore;
 

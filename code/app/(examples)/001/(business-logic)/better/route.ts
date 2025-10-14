@@ -1,11 +1,7 @@
+import { getTodoById } from "@/lib/business-logic";
+import { TodoStore } from "@/lib/todo-store";
 import { Effect, ManagedRuntime } from "effect";
 import { NextResponse } from "next/server";
-import { Todo, TodoNotFoundError } from "./business-logic";
-import { TodoStore } from "./todo-store";
-
-declare function getTodoById(args: {
-  id: number;
-}): Effect.Effect<Todo, TodoNotFoundError, TodoStore>;
 
 // Here we use a managed runtime to handle dependencies
 export const runtime = ManagedRuntime.make(TodoStore.Default);

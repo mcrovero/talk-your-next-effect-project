@@ -2,7 +2,7 @@ import { Next, NextMiddleware } from "@mcrovero/effect-nextjs";
 import { Layer, Schema } from "effect";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
-import { TodoStore } from "../../../001/(business-logic)/todo-store";
+import { TodoStore } from "../../../../../lib/todo-store";
 
 // A simple service
 export class CurrentUser extends Context.Tag("CurrentUser")<
@@ -19,8 +19,9 @@ export class AuthMiddleware extends NextMiddleware.Tag<AuthMiddleware>()(
 ) {}
 
 // Live implementation for the middleware
-export const AuthLive = NextMiddleware.layer(AuthMiddleware, () =>
-  Effect.succeed({ id: "123", name: "Ada" })
+export const AuthLive = Layer.succeed(
+  AuthMiddleware,
+  AuthMiddleware.of(() => Effect.succeed({ id: "123", name: "Ada" }))
 );
 
 // Combine all lives you need

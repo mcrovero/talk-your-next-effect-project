@@ -1,16 +1,12 @@
 import { Effect, Either } from "effect";
 import { NextResponse } from "next/server";
-import { Todo, TodoNotFoundError } from "./business-logic";
-import { TodoStore } from "./todo-store";
-
-declare function getTodoById(args: {
-  id: number;
-}): Effect.Effect<Todo, TodoNotFoundError, TodoStore>;
+import { getTodoById } from "../../../../lib/business-logic";
+import { TodoStore } from "../../../../lib/todo-store";
 
 export const GET = async () => {
   // We need to exit the effect world
   const todo = await Effect.runPromise(
-    getTodoById({ id: 2 }).pipe(
+    getTodoById({ id: 1 }).pipe(
       Effect.provide(TodoStore.Default),
       Effect.either
     )

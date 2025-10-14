@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@mcrovero/effect-nextjs": "^0.30.0",
-    "effect": "^3.18.2",
+    "effect": "^3.18.4",
     "next": "15.5.4",
     "react": "19.1.0",
     "react-dom": "19.1.0"
