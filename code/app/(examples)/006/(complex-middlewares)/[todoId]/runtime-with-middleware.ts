@@ -3,6 +3,7 @@ import { Layer, Schema } from "effect";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
 import { TodoStore } from "../../../../../lib/todo-store";
+import { HandleCommonErrorsLive } from "./catch-error-middleware";
 
 // A simple service
 export class CurrentUser extends Context.Tag("CurrentUser")<
@@ -25,7 +26,11 @@ export const AuthLive = Layer.succeed(
 );
 
 // Combine all lives you need
-const AppLive = Layer.mergeAll(AuthLive, TodoStore.Default);
+const AppLive = Layer.mergeAll(
+  AuthLive,
+  TodoStore.Default,
+  HandleCommonErrorsLive
+);
 
 // Create a typed page handler
 export const AuthenticatedPage = Next.make("BasePage", AppLive).middleware(

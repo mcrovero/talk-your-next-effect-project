@@ -3,6 +3,7 @@ import {
   decodeSearchParamsUnknown,
 } from "@mcrovero/effect-nextjs/Params";
 import { Effect, Schema } from "effect";
+import { HandleCommonErrorsMiddleware } from "./catch-error-middleware";
 import { AuthenticatedPage } from "./runtime-with-middleware";
 
 const TodoPage = Effect.fn("TodoPage")(function* (
@@ -22,7 +23,8 @@ const TodoPage = Effect.fn("TodoPage")(function* (
             id: {params.todoId}
             {searchParams.search ? (
               <>
-                {" "}• <span className="text-zinc-400">{searchParams.search}</span>
+                {" "}
+                • <span className="text-zinc-400">{searchParams.search}</span>
               </>
             ) : null}
           </p>
@@ -37,4 +39,6 @@ const TodoPage = Effect.fn("TodoPage")(function* (
   );
 });
 
-export default AuthenticatedPage.build(TodoPage);
+export default AuthenticatedPage.middleware(HandleCommonErrorsMiddleware).build(
+  TodoPage
+);

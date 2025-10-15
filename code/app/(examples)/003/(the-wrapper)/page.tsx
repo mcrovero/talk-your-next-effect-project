@@ -1,13 +1,12 @@
 import { getTodoById } from "@/lib/business-logic";
-import { Redirect } from "@mcrovero/effect-nextjs/Navigation";
 import { Effect } from "effect";
+import { notFound } from "next/navigation";
 import { Next } from "./wrapper";
 
-const HomePage = Effect.fn("HomePage")(function* () {
-  yield* Effect.log("Home Page");
-  return yield* getTodoById({ id: 1 }).pipe(
+const HomePage = () =>
+  getTodoById({ id: 1 }).pipe(
     Effect.catchTag("TodoNotFoundError", () => {
-      return Redirect("/404");
+      return Effect.sync(() => notFound());
     }),
     Effect.flatMap((todo) =>
       Effect.succeed(
@@ -20,6 +19,5 @@ const HomePage = Effect.fn("HomePage")(function* () {
       )
     )
   );
-});
 
 export default Next(HomePage);

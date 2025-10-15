@@ -8,6 +8,7 @@
 - [@mcrovero/effect-nextjs](https://github.com/mcrovero/effect-nextjs)
 - [@mcrovero/effect-nextjs Example application](https://github.com/mcrovero/effect-nextjs-example)
 - [@mcrovero/effect-react-cache](https://github.com/mcrovero/effect-react-cache)
+- [Effect by Example: Nextjs API handler](https://effectbyexample.com/nextjs-api-handler/)
 
 ## Contacts
 
