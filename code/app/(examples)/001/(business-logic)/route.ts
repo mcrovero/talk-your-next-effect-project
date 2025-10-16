@@ -1,23 +1,22 @@
-import { Effect, Either } from "effect";
+import { TodoNotFoundError } from "@/lib/business-logic";
+import { Todo } from "@/lib/todo";
+import { TodoStore } from "@/lib/todo-store";
+import { Effect } from "effect";
 import { NextResponse } from "next/server";
-import { getTodoById } from "../../../../lib/business-logic";
-import { TodoStore } from "../../../../lib/todo-store";
+
+declare function getTodoById(
+  id: number
+): Effect.Effect<Todo, TodoNotFoundError, TodoStore>;
 
 export const GET = async () => {
-  // We need to exit the effect world
-  const todo = await Effect.runPromise(
-    getTodoById({ id: 1 }).pipe(
-      Effect.provide(TodoStore.Default),
-      Effect.either
-    )
-  );
+  try {
+    // We need to exit the effect world
+    const todo = await Effect.runPromise(
+      getTodoById(2).pipe(Effect.provide(TodoStore.Default))
+    );
 
-  if (Either.isLeft(todo)) {
-    // The error tag is typed
-    if (todo.left._tag === "TodoNotFoundError") {
-      return NextResponse.json({ message: "No todos found" }, { status: 404 });
-    }
+    return NextResponse.json({ data: todo }, { status: 200 });
+  } catch (error) {
     return NextResponse.json({ message: "Unknown error" }, { status: 500 });
   }
-  return NextResponse.json({ data: todo.right }, { status: 200 });
 };

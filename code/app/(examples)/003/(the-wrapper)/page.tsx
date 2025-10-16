@@ -3,21 +3,19 @@ import { Effect } from "effect";
 import { notFound } from "next/navigation";
 import { Next } from "./wrapper";
 
-const HomePage = () =>
-  getTodoById({ id: 1 }).pipe(
+const TodoPage = () =>
+  Effect.gen(function* () {
+    const todo = yield* getTodoById({ id: 1 });
+    return (
+      <div>
+        <h1>Todo Page</h1>
+        <p>{todo.title}</p>
+      </div>
+    );
+  }).pipe(
     Effect.catchTag("TodoNotFoundError", () => {
       return Effect.sync(() => notFound());
-    }),
-    Effect.flatMap((todo) =>
-      Effect.succeed(
-        <div className="flex min-h-screen items-center justify-center bg-black">
-          <div className="text-white text-2xl font-semibold flex flex-col items-center">
-            <span className="mb-2">Home Page</span>
-            <span className="text-lg font-normal">{todo.title}</span>
-          </div>
-        </div>
-      )
-    )
+    })
   );
 
-export default Next(HomePage);
+export default Next(TodoPage);
